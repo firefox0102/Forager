@@ -1,0 +1,72 @@
+/*CSS used for the report page*/
+body{
+	background-color:#787878 ;
+}
+.MAIN{
+	background-color:#F1F1F1;
+	width:90%;
+	min-width:400px;
+	padding:20px;
+	margin: 0 auto;
+	word-wrap: break-word;
+}
+.MIDDLE_PAGE{
+	background-color:#FFFAFA;
+	width:85%;
+	margin: 0 auto;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.BLOCK{
+	background-color:#FA8072;
+	width:75%;
+	margin: 0 auto;
+	padding:20px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.TEXT_BOX{
+	background-color:#FAFAFA;
+	width:75%;
+	margin: 0 auto;
+	padding:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.PAGE{
+	background-color:#708090;
+	width:75%;
+	margin: 0 auto;
+	padding:20px;
+	padding-right:50px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.ECHO_INFORMATION{
+	background-color:#FFFAFA;
+	padding:20px;
+}
+.BUTTON_IMG_WRAPPER{
+	background: url('img_blank.png') repeat;
+	opacity: .8;
+	margin:10px;
+}
+.BUTTON_IMG_WRAPPER img{
+	opacity:.5;
+}
+.BUTTON_IMG_CONTENT_PARTS{
+	vertical-align: middle;
+	display: table-cell;
+	text-align:center;
+}
+.BUTTON_IMG_WRAPPER:hover, .BUTTON_IMG_WRAPPER:hover img{
+	opacity:1;
+	text-decoration:underline;
+}
+/*.ECHO_INFORMATION, .BLOCK, .TEXT_BOX{
+	opacity:.6;
+}
+.ECHO_INFORMATION:hover, .BLOCK:hover, .TEXT_BOX:hover{
+	opacity:1;
+}*/
