@@ -11,7 +11,7 @@ include_once ('search_and_test_functions.php');
 include_once ('build_interactable_report_functions.php');
 //=============================================================================================================================================
 //Set up Fake Forager
-$SOURCE = "http://localhost:8080/Forager/";
+$SOURCE = "http://sugarloafanimal.com/";
 //$SOURCE = 'http://fac-web.spsu.edu/tc/dcolebec/Fall%202010%20Arts%202001%20Webpage%20Folder/';
 //$DOMAIN = "http://localhost:8080/Forager/";
 $DOMAIN = $SOURCE;
@@ -57,7 +57,7 @@ do{
 		{
 			$type = 'bad' . $type;
 			//writing to the database...
-			$DATABASE_MAIN[GET_INFO($DATABASE_MAIN,$element['ID'])[0]]['type'] = $type;
+			$DATABASE_MAIN[GET_INFO($DATABASE_MAIN, $element['ID'])[0]]['type'] = $type;
 			ECHO_ALERT(FALSE,"BAD!!");
 		}
 		else
@@ -66,7 +66,7 @@ do{
 			if($DOMAIN != "" && EXISTS($element['source'],$DOMAIN) && $type == "good_link")
 				array_push($DATABASE_FIND,$element);
 			//writing to the database...
-			$DATABASE_MAIN[GET_INFO($DATABASE_MAIN,$element['ID'])[0]]['type'] = $type;
+			$DATABASE_MAIN[GET_INFO($DATABASE_MAIN, $element['ID'])[0]]['type'] = $type;
 			ECHO_ALERT(true,"GOOD!!");
 		}
 		Remove_Index($DATABASE_TEST,$i);
