@@ -184,3 +184,6 @@ function Get_Tags(tmpl){
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 $("#result").addClass('msg_error');
+OR
+x = querySelector(stuffs);
+x.addClass()?? idk how this works syntacticly
