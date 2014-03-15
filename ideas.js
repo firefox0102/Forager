@@ -176,3 +176,11 @@ function Get_Tags(tmpl){
   }
   result.innerHTML = inner;
 }());
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+//
+//       to change dom css where errors exist
+//
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+$("#result").addClass('msg_error');
