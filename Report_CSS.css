@@ -1,6 +1,6 @@
 /*CSS used for the report page*/
 body{
-	background-color:#787878 ;
+	background-color:#989898;
 }
 .MAIN{
 	background-color:#F1F1F1;
@@ -19,7 +19,7 @@ body{
 	margin-bottom:10px;
 }
 .BLOCK{
-	background-color:#FA8072;
+	background-color:#FFA033;
 	width:75%;
 	margin: 0 auto;
 	padding:20px;

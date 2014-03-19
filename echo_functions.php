@@ -1,5 +1,36 @@
 <?php
 //=============================================================================================================================================
+function ECHO_ANIMATE($SPEED,$WIDTH,$HEIGHT)
+{
+	$disp = "<script type='text/javascript'>";
+	
+	for($i = 3; $i < func_num_args(); ++$i)
+	{
+		$disp .= "
+				  var image" . ($i - 2) . "=new Image()
+				  image" . ($i - 2) . ".src='" . func_get_args(0)[$i] . "'";
+	}
+	$disp .= "</script>
+			<img src=" . func_get_args(0)[3] . " name='slide' width=$WIDTH height=$HEIGHT />
+			<script>
+			var step=1
+			var max = " . (func_num_args() - 3) . "
+			function slideit(){
+			if (!document.images)
+			return
+			document.images.slide.src=eval('image'+step+'.src')
+			if (step<max)
+			step++
+			else
+			step=1
+			setTimeout('slideit()',$SPEED)
+			}
+			slideit()
+			</script>";
+	echo $disp;
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
 //Echoes out each individual element in an array.
 function Echo_Array($array)
 {
@@ -84,9 +115,9 @@ function ECHO_BUTTON($IMG_WIDTH,$IMG_HEIGHT,$ACTION,$TEXT)
 function ECHO_ALERT($GOOD)
 {
 	if($GOOD)
-		$str = "style='background-color:#98FB98;'";
+		$str = "style='background-color:#19FF19;'";
 	else
-		$str = "style='background-color:#FA8072;'";
+		$str = "style='background-color:#FF1919;'";
 
 	if(sizeof(func_get_args(0)) > 1)
 	{
