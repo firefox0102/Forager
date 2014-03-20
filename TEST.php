@@ -31,7 +31,11 @@ ECHO_BUTTON("100px","20px","http://google.com","GOOGLE");
 ECHO_BUTTON("100px","20px","http://google.com","LOG IN","");
 ECHO_BUTTON("100px","20px","http://google.com",true,"icon_go.png","auto","10px","#98FB98");
 ECHO_BUTTON("100px","20px","http://google.com",true,"icon_left_arrow.png","10px","10px","");
-ECHO_ANIMATE(250,"100px","56px","load_1_1.png","load_1_2.png","load_1_3.png","load_1_1.png","load_1_4.png","load_1_5.png");
+
+ECHO_SINGLE_ANIMATE(250,"100px","56px","load_1_1.png","load_1_2.png","load_1_3.png","load_1_1.png","load_1_4.png","load_1_5.png");
+
+ECHO_MULTIPLE_ANIMATE(250,"100px","56px","load_animation","load_2_1.png","load_2_2.png","load_2_3.png","load_2_1.png","load_2_4.png","load_2_5.png");
+ECHO_MULTIPLE_ANIMATE(2500,"100px","56px",0,"icon_left_arrow.png","load_1_2.png","load_1_3.png","load_1_4.png");
 
 array_push($DATABASE_MAIN,array("ID"=>"$id","link" => $link,"source"=>$SOURCE,"hlink"=>$hLink, "type"=>"undifined"));
 //=============================================================================================================================================

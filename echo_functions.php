@@ -1,6 +1,37 @@
 <?php
 //=============================================================================================================================================
-function ECHO_ANIMATE($SPEED,$WIDTH,$HEIGHT)
+function ECHO_MULTIPLE_ANIMATE($SPEED,$WIDTH,$HEIGHT,$ANIMATION_NUMBER)
+{
+	$disp = "<script type='text/javascript'>";
+	
+	for($i = 4; $i < func_num_args(); ++$i)
+	{
+		$disp .= "
+				  var image_" . $ANIMATION_NUMBER . "_" . ($i - 3) . "=new Image()
+				  image_" . $ANIMATION_NUMBER . "_" . ($i - 3) . ".src='" . func_get_args(0)[$i] . "'";
+	}
+	$disp .= "</script>";
+	$disp .= "<img src=" . func_get_args(0)[4] . " name='slide_" . $ANIMATION_NUMBER . "' width=$WIDTH height=$HEIGHT />
+			<script>
+			var step_" . $ANIMATION_NUMBER . "=1
+			var max_" . $ANIMATION_NUMBER . " = " . (func_num_args() - 4) . "
+			function slideit_" . $ANIMATION_NUMBER . "(){
+			if (!document.images)
+			return
+			document.images.slide_" . $ANIMATION_NUMBER . ".src=eval('image_" . $ANIMATION_NUMBER . "_'+step_" . $ANIMATION_NUMBER . "+'.src')
+			if (step_" . $ANIMATION_NUMBER . "<max_" . $ANIMATION_NUMBER . ")
+			step_" . $ANIMATION_NUMBER . "++
+			else
+			step_" . $ANIMATION_NUMBER . "=1
+			setTimeout('slideit_" . $ANIMATION_NUMBER . "()',$SPEED)
+			}
+			slideit_" . $ANIMATION_NUMBER . "()
+			</script>";
+	echo $disp;
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+function ECHO_SINGLE_ANIMATE($SPEED,$WIDTH,$HEIGHT)
 {
 	$disp = "<script type='text/javascript'>";
 	
