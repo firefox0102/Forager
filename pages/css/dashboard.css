@@ -3,15 +3,39 @@
 			dashboard.css
 
 *************************************/
-.container_fluid {
+.navbar {
+  position: relative;
+  min-height: 50px;
   
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  background-color: #0e855b;
+  padding: 10px
+}
+
+.navbar-static-side {
+  z-index: 1;
+  position: absolute;
+  width: 250px;
+}
+.navbar-default {
+  background-color: #222222;
+  border-color: #e7e7e7;
+}
+.container_fluid {
   margin-right: auto;
   margin-left: auto;
-
+}
+.main {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	margin:-1px;
 }
 body {
 	background-image:url('../img/HexTile.png');
-  background-image:repeat;
+  	background-image:repeat;
+  	margin:0px;
 }
 
 .row {
