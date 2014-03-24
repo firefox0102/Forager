@@ -36,6 +36,7 @@ body {
 	background-image:url('../img/HexTile.png');
   	background-image:repeat;
   	margin:0px;
+  	font-family: 'Ubuntu', sans-serif;
 }
 
 .row {
@@ -127,7 +128,7 @@ body {
 }
 /*added --Used for the main data coming in--*/
 #main_data{
-  font-family: 'Inconsolata', serif;
+  
   text-align: left;
   position: relative;
   width: 60%;
