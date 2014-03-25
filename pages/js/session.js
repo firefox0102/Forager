@@ -2,7 +2,10 @@ var Session = {
     userId: 1,
     userName: "apfundst",
     name: "Drew Pfundstein",
-    getInfo: function () {
+    setInfo: function (result) {
+    	this.name = result.name;
+    	this.id = result.id;
+    	console.log(result);
         
     },
     login: function(usn, pass){
@@ -10,11 +13,9 @@ var Session = {
     	$.post("login_request.php",{un: usn, password: pass})
 
     	.done(function(result) {
-    		this.name = result.name;
-    		this.id = result.id;
+    		Session.userName = usn;
     		console.log(result);
-    		this.userName = un;
-    		console.log(this);
+    		
   			//window.location = "http://www.yoururl.com";
 		})
 		  
