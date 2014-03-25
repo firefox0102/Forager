@@ -90,10 +90,15 @@ var curReport = function(){
     dateCreated: 0,
     totalPagesScanned: 0,
     totalErrors: 0,
+    totalTime: 0,
     getFromServer: function(){
-            
-        
-        //else already started so do nothing.
+        $post("get_report.php",{id: curReport.id})
+        .done(function(){
+
+        })
+        .fail(function(){
+
+        });
     },
 
 }
