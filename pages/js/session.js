@@ -23,7 +23,7 @@ var Session = {
     		//Session.setInfo(result);
     		//console.log(Session);
     		
-  			//window.location = "http://www.yoururl.com";
+  			window.location = "dashboard.html";
 		})
 		  
 		  .fail(function() {
@@ -54,4 +54,31 @@ var dataStore = {
 
     return value;
   }
+}
+
+var scanTime = {
+    startTime: 0,
+    endTime: 0,
+    total: 0,
+    start: function(){
+            scanTime.startTime = new Date();
+            dataStore.set("scanTimer", scanTime);
+        
+        //else already started so do nothing.
+    },
+    stop: function(){
+        scanTime.endTime = new Date();
+        scanTime.total = scanTime.endTime - scanTime.startTime;
+        dataStore.set("scanTimer", scanTime);
+    },
+    getElapsed: function(){
+        console.log(dataStore.get("scanTimer"));
+        var now = new Date();
+        var elapsed = now - scanTime.startTime
+        scanTime.total = elapsed;
+        dataStore.set("scanTimer", scanTime);
+        var value = dataStore.get("scanTimer");
+
+        return value.total;
+    }
 }

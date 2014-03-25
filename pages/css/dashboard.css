@@ -169,3 +169,8 @@ background-color:#ecf0f1;
   color: #FFC425;
 }
 /* END TABLES   */
+button #start_scan{
+  padding: 20px;
+  color: #619080;
+  margin: 0, auto;
+}

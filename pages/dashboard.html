@@ -25,8 +25,9 @@
   <div class="panel_body">
   <br>
   <br>
-    <button id="start_scan">log session</button>
-    <button id="compare_scans"> compare </button>
+    <button id="start_scan">Start Scan</button>
+    <!--<button id="compare_scans"> compare </button>-->
+    <div id="scan_timer"></div>
     <br>
     <br>
   </div>
@@ -42,20 +43,7 @@ Password: <input id="pass" type="password" name="lastname">
 </form>
 <button id="log_session">log session</button>
 <button id="log_cookie">log cookie</button>
-<script type="text/javascript">
-  $( "#login_form" ).on( "submit", function( event ) {
-  event.preventDefault();
-  //console.log( $( this ).serializeArray() );
-  Session.login($("#un").val(), $("#pass").val());
-});
-  $("#log_session").click(function(event){
-    console.log(Session);
-  });
-  $("#log_cookie").click(function(event){
-    var val = dataStore.get("user");
-    console.log(val);
-  });
-</script>
+
     <table id="goups_background">
       <thead>
         <tr class="tr_non_clickable"id="goups_background">
@@ -149,7 +137,39 @@ Password: <input id="pass" type="password" name="lastname">
   </div>
   
   </div>
-
+<script type="text/javascript">
+  $( "#login_form" ).on( "submit", function( event ) {
+  event.preventDefault();
+  //console.log( $( this ).serializeArray() );
+  Session.login($("#un").val(), $("#pass").val());
+});
+  $("#log_session").click(function(event){
+    console.log(Session);
+  });
+  $("#log_cookie").click(function(event){
+    var val = dataStore.get("user");
+    console.log(val);
+  });
+  $("#start_scan").click(function(event){
+    //TODO: start a scan on server
+    //var yolo = dataStore.get("scanTimer");
+        
+    //if(yolo.total === 0){
+        scanTime.start();
+    /*}else{
+      scanTime.startTime = yolo.startTime;
+      scanTime.total = yolo.total;
+      scanTime.endTime = yolo.endTime;
+    }*/
+    console.log(Session);
+    
+    $(this).prop('disabled', true);
+    var timeDiv = document.getElementById('scan_timer');
+    setInterval(function () {
+      timeDiv.innerHTML = "ms since the start: " + scanTime.getElapsed();
+    }, 1000);
+  });
+</script>
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
   </body>
   </html>
