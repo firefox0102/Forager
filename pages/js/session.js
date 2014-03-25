@@ -82,3 +82,18 @@ var scanTime = {
         return value.total;
     }
 }
+
+var curReport = function(){
+    id: 0,
+    name: 0,
+    creator: 0,
+    dateCreated: 0,
+    totalPagesScanned: 0,
+    totalErrors: 0,
+    getFromServer: function(){
+            
+        
+        //else already started so do nothing.
+    },
+
+}
