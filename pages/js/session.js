@@ -6,11 +6,15 @@ var Session = {
         
     },
     login: function(un, pass){
-    	$.post("login_request.php",{un: un, password: pass},function(result) {
+    	
+    	$.post("login_request.php",{un: un, password: pass})
+
+    	.done(function(result) {
     		this.name = result.name;
     		this.id = result.id;
+    		console.log(result);
     		this.userName = un;
-  			window.location = "http://www.yoururl.com";
+  			//window.location = "http://www.yoururl.com";
 		})
 		  
 		  .fail(function() {
