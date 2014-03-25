@@ -19,6 +19,17 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel">
+<div class="panel_heading">
+    Scan Controls
+  </div>
+  <div class="panel_body">
+  <br>
+  <br>
+    <button id="start_scan">log session</button>
+    <button id="compare_scans"> compare </button>
+    <br>
+    <br>
+  </div>
   <div class="panel_heading">
     Existing Reports
   </div>
@@ -30,6 +41,7 @@ Password: <input id="pass" type="password" name="lastname">
 <input type="submit" value="Login">
 </form>
 <button id="log_session">log session</button>
+<button id="log_cookie">log cookie</button>
 <script type="text/javascript">
   $( "#login_form" ).on( "submit", function( event ) {
   event.preventDefault();
@@ -39,7 +51,10 @@ Password: <input id="pass" type="password" name="lastname">
   $("#log_session").click(function(event){
     console.log(Session);
   });
-  
+  $("#log_cookie").click(function(event){
+    var val = dataStore.get("user");
+    console.log(val);
+  });
 </script>
     <table id="goups_background">
       <thead>
