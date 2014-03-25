@@ -20,8 +20,8 @@ $sql = "
 ";
 
 $result = mysqli_query($con,$sql);
-if(mysql_num_rows($result) > 0 ){
-	$row = mysqli_fetch_array($result, MYSQLI_BOTH);
+$row = mysqli_fetch_array($result, MYSQLI_BOTH);
+if( !is_null($row) ){
 	$user_id = $row["user_id"];
 	$_SESSION["user_id"] = $user_id;
 	$name = $row["fname"].' '.$row["lname"];
