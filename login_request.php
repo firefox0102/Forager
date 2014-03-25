@@ -17,8 +17,8 @@ $password  = mysqli_real_escape_string($password);
 $sql = "
 	SELECT user_id, fname, lname
 	FROM `user`
-	WHERE '$user_name' = user_name AND 
-		  '$password' = password 
+	WHERE 'apfundst' = user_name AND 
+		  'yerp' = password 
 ";
 
 $result = mysqli_query($con,$sql);
@@ -33,9 +33,6 @@ if(mysqli_num_rows($result)){
 	$json_ob = json_encode($data);
 	echo $json_ob;
 }
-else{
-	echo "400";
-}	
-
+	
 } // first else statement close
 ?>
