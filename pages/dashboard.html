@@ -29,12 +29,17 @@ Username: <input id="un"type="text" name="firstname"><br>
 Password: <input id="pass" type="password" name="lastname">
 <input type="submit" value="Login">
 </form>
+<button id="log_session">log session</button>
 <script type="text/javascript">
   $( "#login_form" ).on( "submit", function( event ) {
   event.preventDefault();
   //console.log( $( this ).serializeArray() );
   Session.login($("#un").val(), $("#pass").val());
 });
+  $("#log_session").click(function(event){
+    console.log(Session);
+  });
+  
 </script>
     <table id="goups_background">
       <thead>

@@ -1,7 +1,7 @@
 var Session = {
     userId: 1,
-    userName: "apfundst",
-    name: "Drew Pfundstein",
+    userName: "bob",
+    name: "bob",
     setInfo: function (result) {//takes a json object, intended to come from server
     	this.name = result.name;
     	this.id = result.id;
@@ -15,9 +15,11 @@ var Session = {
 
     	.done(function(result) {
     		Session.userName = usn;
+    		Session.name = result['name'];
+    		Session.userId = result.user_id;
     		console.log(result);
-    		Session.setInfo(result);
-    		console.log(Session);
+    		//Session.setInfo(result);
+    		//console.log(Session);
     		
   			//window.location = "http://www.yoururl.com";
 		})
