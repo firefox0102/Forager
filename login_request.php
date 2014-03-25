@@ -9,8 +9,8 @@ if (mysqli_connect_errno()){
 $user_name = $_POST['un']; 
 $password = $_POST['password'];
 
-$user_name = mysqli_real_escape_string($user_name);
-$password  = mysqli_real_escape_string($password);
+$user_name = mysql_real_escape_string($user_name);
+$password  = mysql_real_escape_string($password);
 
 $sql = "
 	SELECT user_id, fname, lname
@@ -20,12 +20,12 @@ $sql = "
 ";
 
 $result = mysqli_query($con,$sql);
-if(mysqli_num_rows($result) > 0 ){
-	$row = mysqli_fetch_array($result);
-	$user_id = $row['user_id'];
-	$_SESSION['user_id'] = $user_id;
-	$name = $row['fname'].' '.$row['lname'];
-	$_SESSION['name'] = $name;
+if(mysql_num_rows($result) > 0 ){
+	$row = mysqli_fetch_array($result, MYSQLI_BOTH);
+	$user_id = $row["user_id"];
+	$_SESSION["user_id"] = $user_id;
+	$name = $row["fname"].' '.$row["lname"];
+	$_SESSION["name"] = $name;
 
 	$data = array('user_id' => $user_id, 'name' => $name);
 	$json_ob = json_encode($data);
