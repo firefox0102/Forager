@@ -1,6 +1,8 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="js/session.js"></script>
 </head>
 <body>
 
@@ -21,6 +23,18 @@
     Existing Reports
   </div>
   <div class="panel_body">
+  <form id="login_form">
+Username: <input id="un"type="text" name="firstname"><br>
+Password: <input id="pass" type="password" name="lastname">
+<input type="submit" value="Login">
+</form>
+<script type="text/javascript">
+  $( "#login_form" ).on( "submit", function( event ) {
+  event.preventDefault();
+  console.log( $( this ).serializeArray() );
+  Session.login($("#un").val(), $("#pass").val());
+});
+</script>
     <table id="goups_background">
       <thead>
         <tr class="tr_non_clickable"id="goups_background">
