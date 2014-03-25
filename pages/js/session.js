@@ -5,15 +5,16 @@ var Session = {
     getInfo: function () {
         
     },
-    login: function(un, pass){
+    login: function(usn, pass){
     	
-    	$.post("login_request.php",{un: un, password: pass})
+    	$.post("login_request.php",{un: usn, password: pass})
 
     	.done(function(result) {
     		this.name = result.name;
     		this.id = result.id;
     		console.log(result);
     		this.userName = un;
+    		console.log(this);
   			//window.location = "http://www.yoururl.com";
 		})
 		  
