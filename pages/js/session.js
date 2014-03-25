@@ -60,6 +60,7 @@ var scanTime = {
     startTime: 0,
     endTime: 0,
     total: 0,
+    timer: 0,
     start: function(){
             scanTime.startTime = new Date();
             dataStore.set("scanTimer", scanTime);
@@ -83,7 +84,7 @@ var scanTime = {
     }
 }
 
-var curReport = function(){
+/*var curReport = function(){
     id: 0,
     name: 0,
     creator: 0,
@@ -99,6 +100,6 @@ var curReport = function(){
         .fail(function(){
 
         });
-    },
+    }
 
-}
+}*/

@@ -26,6 +26,7 @@
   <br>
   <br>
     <button id="start_scan">Start Scan</button>
+    <button id="stop_scan">Stop Scan</button>
     <!--<button id="compare_scans"> compare </button>-->
     <div id="scan_timer"></div>
     <br>
@@ -138,6 +139,9 @@ Password: <input id="pass" type="password" name="lastname">
   
   </div>
 <script type="text/javascript">
+  $(document).ready(function(){
+    $("#stop_scan").hide();
+  });
   $( "#login_form" ).on( "submit", function( event ) {
   event.preventDefault();
   //console.log( $( this ).serializeArray() );
@@ -152,22 +156,22 @@ Password: <input id="pass" type="password" name="lastname">
   });
   $("#start_scan").click(function(event){
     //TODO: start a scan on server
-    //var yolo = dataStore.get("scanTimer");
-        
-    //if(yolo.total === 0){
+    
         scanTime.start();
-    /*}else{
-      scanTime.startTime = yolo.startTime;
-      scanTime.total = yolo.total;
-      scanTime.endTime = yolo.endTime;
-    }*/
+    
     console.log(Session);
     
-    $(this).prop('disabled', true);
+    //$(this).prop('disabled', true);
+    $(this).hide();
+    $("#stop_scan").show();
     var timeDiv = document.getElementById('scan_timer');
-    setInterval(function () {
-      timeDiv.innerHTML = "ms since the start: " + scanTime.getElapsed();
+    scanTime.timer = setInterval(function () {
+      timeDiv.innerHTML = "Seconds since the start: " + (scanTime.getElapsed()/1000);
     }, 1000);
+  });
+  $("#stop_scan").click(function(event){
+    //TODO stop scan on server
+    clearInterval(scanTime.timer);
   });
 </script>
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
