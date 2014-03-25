@@ -1,1 +1,46 @@
-//peter?
+<html>
+<head>
+<!--style sheets-->
+<link rel="stylesheet" type="text/css" href="css/dashboard.css">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<!--javascript imports-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.js"></script>
+<script type="text/javascript" src="js/session.js"></script>
+</head>
+<body>
+
+<div class="container_fluid">
+
+<nav class="navbar navbar-default" role="navigation">
+<img src="img/SPSU_WORD_RGB.png" width="200"/>
+</nav>
+
+<div class="row">
+<div class="col-md-8">
+<div class="panel">
+  <div class="panel_heading">
+    Log In
+  </div>
+  <div class="panel_body">
+    <div id="error_tag"></div>
+    <form id="login_form">
+      Username: <input id="un"type="text" name="firstname"><br>
+      Password: <input id="pass" type="password" name="lastname">
+      <input type="submit" value="Login">
+      </form>
+      <script type="text/javascript">
+      	$( "#login_form" ).on( "submit", function( event ) 
+      	{
+      		event.preventDefault();
+      		console.log( $( this ).serializeArray() );
+      		Session.login($("#un").val(), $("#pass").val());
+      	});
+      </script>
+  </div>
+</div>
+</div>
+</div>
+
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
+</body>
+</html>
