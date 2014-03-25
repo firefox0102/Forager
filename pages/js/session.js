@@ -5,7 +5,7 @@ var Session = {
     setInfo: function (result) {
     	this.name = result.name;
     	this.id = result.id;
-    	console.log(result);
+    	//console.log(result);
         
     },
     login: function(usn, pass){
