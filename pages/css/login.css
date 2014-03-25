@@ -8,3 +8,16 @@
     margin-right: auto; 
     margin-left:auto
 }
+
+.navbar-default-login {
+  position: fixed;
+  top: 0;
+  background-color: #222222;
+  border-color: #e7e7e7;
+  width: 100%;
+}
+
+.navbar-login {
+  background-color: #222222;
+  border-color: #e7e7e7;
+}
