@@ -9,8 +9,8 @@ if (mysqli_connect_errno()){
 $user_name = $_POST['un']; 
 $password = $_POST['password'];
 
-$user_name = mysql_real_escape_string($user_name);
-$password  = mysql_real_escape_string($password);
+$user_name = mysqli_real_escape_string($con,$user_name);
+$password  = mysqli_real_escape_string($con,$password);
 
 $sql = "
 	SELECT user_id, fname, lname
