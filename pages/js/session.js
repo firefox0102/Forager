@@ -34,6 +34,9 @@ var Session = {
 		    $('#error_tag').html("Login Failed");
 		  });
 
+    },
+    check: function(){
+        
     }
 }
 

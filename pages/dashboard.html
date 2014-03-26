@@ -140,6 +140,7 @@ Password: <input id="pass" type="password" name="lastname">
   </div>
 <script type="text/javascript">
   $(document).ready(function(){
+    Session.check();
     $("#stop_scan").hide();
   });
   $( "#login_form" ).on( "submit", function( event ) {
