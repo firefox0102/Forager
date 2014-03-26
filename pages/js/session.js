@@ -3,8 +3,10 @@ var Session = {
     userName: null,
     name: null,
     setInfo: function (result) {//takes a json object, intended to come from server
-    	this.name = result.name;
-    	this.id = result.id;
+    	Session.name = result.name;
+    	Session.userId = result.userId;
+        Session.userName = result.userName;
+
     	//console.log(result);
         
     },
@@ -36,7 +38,22 @@ var Session = {
 
     },
     check: function(){
+        var checker = dataStore.get("user");
+        if(checker.name === null){
+            window.location = "login.html";
+        }else{
+            Session.setInfo(checker);
+            console.log(Session);
+
+        }
         
+    },
+    logout: function(){
+        Session.name = null;
+        Session.userName = null;
+        Session.userId = null;
+        dataStore.set("user", Session);
+        window.location = "login.html";
     }
 }
 

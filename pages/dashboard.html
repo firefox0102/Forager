@@ -44,6 +44,7 @@ Password: <input id="pass" type="password" name="lastname">
 </form>
 <button id="log_session">log session</button>
 <button id="log_cookie">log cookie</button>
+<button id="log_out">logout</button>
 
     <table id="goups_background">
       <thead>
@@ -150,6 +151,9 @@ Password: <input id="pass" type="password" name="lastname">
 });
   $("#log_session").click(function(event){
     console.log(Session);
+  });
+  $("#log_out").click(function(event){
+    Session.logout();
   });
   $("#log_cookie").click(function(event){
     var val = dataStore.get("user");
