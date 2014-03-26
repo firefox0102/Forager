@@ -198,7 +198,10 @@ var getAllReports = function(){
             url: "get_reports.php",
             data: {userId: Session.userId},
             success: function(data) {
-                return data;
+                
+                    return JSON.parse(data);
+                
+                
                  
 
                 
