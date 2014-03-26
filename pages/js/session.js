@@ -1,7 +1,7 @@
 var Session = {
     userId: 1,
-    userName: "bob",
-    name: "bob",
+    userName: null,
+    name: null,
     setInfo: function (result) {//takes a json object, intended to come from server
     	this.name = result.name;
     	this.id = result.id;
@@ -14,16 +14,20 @@ var Session = {
     	$.post("login_request.php",{un: usn, password: pass})
 
     	.done(function(result) {
-    		Session.userName = usn;
-    		var data = JSON.parse(result);
-    		Session.name = data['name'];
-    		Session.userId = data.user_id;
-    		console.log(data);
-    		dataStore.set("user", Session);
-    		//Session.setInfo(result);
-    		//console.log(Session);
-    		
-  			window.location = "dashboard.html";
+    		if(result != 400){
+                Session.userName = usn;
+        		var data = JSON.parse(result);
+        		Session.name = data['name'];
+        		Session.userId = data.user_id;
+        		console.log(data);
+        		dataStore.set("user", Session);
+        		//Session.setInfo(result);
+        		//console.log(Session);
+        		
+      			window.location = "dashboard.html";
+        }else{
+            $('#error_tag').html("Login Failed");
+        }
 		})
 		  
 		  .fail(function() {
