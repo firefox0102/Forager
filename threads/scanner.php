@@ -1,13 +1,15 @@
 <?php
 class SCANNER extends Worker
 {
-    public function __construct(POOLS &$pools, SafeLog $logger) {
+    public function __construct(POOLS &$pools, DS &$temp_table, SafeLog $logger) {
 		$this->pools = $pools;
 		$this->logger = $logger;	
+		$this->temp_table = &$temp_table;
     }
 	
 	protected $pools;
 	protected $logger;
+	protected $temp_table;
 }
 class SCANWORK extends Stackable {
 	protected $elem;
@@ -46,8 +48,8 @@ class SCANWORK extends Stackable {
 			//Submit to pool_test
 			$this->pool_test->submit(new TESTWORK($arr_temp));
 			//place into temp_table
-			//if(!IN_DATABASE($this->worker->temp_table, $this->elem))
-			//	$this->worker->temp_table[] = array("source"=>$arr_temp['source'],"link"=>$arr_temp['link']);
+			if(!IN_DATABASE($this->worker->temp_table, $this->elem))
+				$this->worker->temp_table[] = array("source"=>$arr_temp['source'],"link"=>$arr_temp['link']);
 		}
 		$this->complete = true;
     }
