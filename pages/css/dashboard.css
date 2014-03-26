@@ -38,6 +38,9 @@ body {
   	margin:0px;
   	font-family: 'Ubuntu', sans-serif;
 }
+div {
+  display: block;
+}
 
 .row {
   margin-right: -15px;
@@ -173,4 +176,12 @@ button #start_scan{
   padding: 20px;
   color: #619080;
   margin: 0, auto;
+}
+
+button .menu{
+  border: 1px solid #ddd;
+  background-color: #0cb270;
+  padding: 8px;
+  margin-left: 10px;
+  font-size: 20px;
 }

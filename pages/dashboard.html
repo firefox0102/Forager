@@ -11,6 +11,14 @@
 
 <nav class="navbar navbar-default" role="navigation">
 <img src="img/SPSU_WORD_RGB.png" width="200"/>
+  <div style="color:white; float:right;">
+  
+      <button id="log_out" class="menu">logout</button><br>
+      <span id="user_logged_in"></span>
+   
+      
+    
+    </div>
 
 
   
@@ -36,15 +44,9 @@
     Existing Reports
   </div>
   <div class="panel_body">
-  <div id="error_tag"></div>
-  <form id="login_form">
-Username: <input id="un"type="text" name="firstname"><br>
-Password: <input id="pass" type="password" name="lastname">
-<input type="submit" value="Login">
-</form>
+  
 <button id="log_session">log session</button>
 <button id="log_cookie">log cookie</button>
-<button id="log_out">logout</button>
 
     <table id="goups_background">
       <thead>
@@ -143,7 +145,10 @@ Password: <input id="pass" type="password" name="lastname">
   $(document).ready(function(){
     Session.check();
     $("#stop_scan").hide();
+    var str = "Logged in as: " + Session.name;
+    $("#user_logged_in").html(str)
   });
+
   $( "#login_form" ).on( "submit", function( event ) {
   event.preventDefault();
   //console.log( $( this ).serializeArray() );
