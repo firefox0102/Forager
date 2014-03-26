@@ -175,13 +175,39 @@ var scan = {
     }
 }
 
+
+var allReports = {
+    get: function(template, result){
+        $.ajax ({
+                dataType: "json",
+                type: "POST",
+                url: "get_reports.php",
+                data: {userId: Session.userId},
+                success: function(data) {
+                    
+                        console.log("success");
+                        console.log(data);
+                        
+                        Render.renderExistingReports(data, template,result);
+
+                       
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("fail");
+
+                    
+                }
+            });
+    }
+}
 var Render = {
     renderExistingReports: function(data, template, result){
         var inner = "";
-        for ( ; i < len; i++ ) {
+        var i = 0;
+        for ( ; i < data.length; i++ ) {
             inner += template
-            .replace( /\{\{name\}\}/, data[i].name )
-            .replace( /\{\{id\}\}/, data[i].id )
+            .replace( /\{\{name\}\}/, data[i].report_name )
+            .replace( /\{\{id\}\}/, data[i].report_id )
             .replace( /\{\{date\}\}/, data[i].date )
             .replace( /\{\{numErr\}\}/, data[i].number_errors ) 
             .replace( /\{\{numPages\}\}/, data[i].pages_scanned );
@@ -190,26 +216,4 @@ var Render = {
         result.innerHTML = inner;
 
     }
-}
-var getAllReports = function(){
-    $.ajax ({
-            dataType: "json",
-            type: "POST",
-            url: "get_reports.php",
-            data: {userId: Session.userId},
-            success: function(data) {
-                
-                    return JSON.parse(data);
-                
-                
-                 
-
-                
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                //uh oh
-
-                
-            }
-        });
 }

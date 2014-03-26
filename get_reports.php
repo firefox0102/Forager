@@ -12,11 +12,11 @@ $sql = "
 
 $arr = array();
 $result = mysqli_query($con,$sql);
-if( !is_null($row) ){
+if( !is_null($result) ){
 	while($temp = mysqli_fetch_assoc($result) ){
 		$arr[] = $temp;
 	}
-	echo json_encode($arr);
+	echo json_encode((array)$arr);
 }
 else{
 	echo "400";

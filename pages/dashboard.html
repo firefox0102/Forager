@@ -70,18 +70,7 @@
 		</tr>
       </thead>
       <tbody id="table_result">
-      <tr class="tr_clickable" id="goups_background">
-        <td id="main_data">1
-        </td>
-        <td id="side_data_l">MM/DD/YY
-        </td>
-        <td id="side_data_s">3
-        </td>
-        <td id="side_data_s">4
-        </td>
-        <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
-        </td>
-      </tr>
+      
       
       
       </tbody>
@@ -99,11 +88,15 @@
     Session.check();
     $("#stop_scan").hide();
     var str = "Logged in as: " + Session.name;
-    $("#user_logged_in").html(str)
-    var reportTableData = getAllReports();
+    $("#user_logged_in").html(str);
     var reportTableResult = document.querySelector('#table_result');
-    var reportTableTmpl = document.querySelector('#reports_template');
-    Render.renderExistingReports(reportTableData, reportTableTmpl, reportTableResult);
+    var reportTableTmpl = document.querySelector('#reports_template').innerHTML;
+
+    allReports.get(reportTableTmpl, reportTableResult);
+
+   
+    //console.log(reportTableData);
+    //Render.renderExistingReports(reportTableData, reportTableTmpl, reportTableResult);
   });
 
   $( "#login_form" ).on( "submit", function( event ) {
