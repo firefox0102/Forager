@@ -69,7 +69,7 @@
 		</th>
 		</tr>
       </thead>
-      <tbody>
+      <tbody id="table_result">
       <tr class="tr_clickable" id="goups_background">
         <td id="main_data">1
         </td>
@@ -82,54 +82,7 @@
         <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
         </td>
       </tr>
-        <tr class="tr_clickable" id="goups_background">
-        <td id="main_data">1
-        </td>
-        <td id="side_data_l">MM/DD/YY
-        </td>
-        <td id="side_data_s">3
-        </td>
-        <td id="side_data_s">4
-        </td>
-        <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
-        </td>
-      </tr>
-        <tr class="tr_clickable" id="goups_background">
-        <td id="main_data">1
-        </td>
-        <td id="side_data_l">MM/DD/YY
-        </td>
-        <td id="side_data_s">3
-        </td>
-        <td id="side_data_s">4
-        </td>
-        <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
-        </td>
-      </tr>
-        <tr class="tr_clickable" id="goups_background">
-        <td id="main_data">1
-        </td>
-        <td id="side_data_l">MM/DD/YY
-        </td>
-        <td id="side_data_s">3
-        </td>
-        <td id="side_data_s">4
-        </td>
-       <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
-        </td>
-      </tr>
-        <tr class="tr_clickable" id="goups_background">
-        <td id="main_data">1
-        </td>
-        <td id="side_data_l">MM/DD/YY
-        </td>
-        <td id="side_data_s">3
-        </td>
-        <td id="side_data_s">4
-        </td>
-        <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
-        </td>
-      </tr>
+      
       
       </tbody>
         
@@ -147,6 +100,10 @@
     $("#stop_scan").hide();
     var str = "Logged in as: " + Session.name;
     $("#user_logged_in").html(str)
+    var reportTableData = getAllReports();
+    var reportTableResult = document.querySelector('#table_result');
+    var reportTableTmpl = document.querySelector('#reports_template');
+    Render.renderExistingReports(reportTableData, reportTableTmpl, reportTableResult);
   });
 
   $( "#login_form" ).on( "submit", function( event ) {
@@ -184,6 +141,20 @@
     clearInterval(scanTime.timer);
   });
 </script>
+<script type="template" id="reports_template">
+    <tr class="tr_clickable" id="goups_background">
+        <td id="main_data"><a href="report.html?id={{id}}">{{name}}</a>
+        </td>
+        <td id="side_data_l">{{date}}
+        </td>
+        <td id="side_data_s">{{numErr}}
+        </td>
+        <td id="side_data_s">{{numPages}}
+        </td>
+        <td id="side_data_s" ><input id="table_contents" type="checkbox"> 
+        </td>
+      </tr>
+  </script>
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
   </body>
   </html>

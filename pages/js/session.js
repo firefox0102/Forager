@@ -108,7 +108,7 @@ var scanTime = {
     }
 }
 
-/*var curReport = function(){
+var curReport = {
     id: 0,
     name: 0,
     creator: 0,
@@ -126,4 +126,87 @@ var scanTime = {
         });
     }
 
-}*/
+}
+
+var scan = {
+    id: 0,
+    name: 0,
+    creator: 0,
+    dateCreated: 0,
+    totalPagesScanned: 0,
+    totalErrors: 0,
+    totalTime: 0,
+    start: function(){
+        $.ajax ({
+        dataType: "json",
+        type: "POST",
+        url: "start_scan.php",
+        data: scan,
+        success: function(data) {
+            window.location = "dashboard.html";
+
+            
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            //uh oh
+
+            
+        }
+    });
+
+    },
+    stop: function(){
+        $.ajax ({
+            dataType: "json",
+            type: "POST",
+            url: "stop_scan.php",
+            data: scan,
+            success: function(data) {
+                 window.location = "dashboard.html";
+
+                
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                //uh oh
+
+                
+            }
+        });
+    }
+}
+
+var Render = {
+    renderExistingReports: function(data, template, result){
+        var inner = "";
+        for ( ; i < len; i++ ) {
+            inner += template
+            .replace( /\{\{name\}\}/, data[i].name )
+            .replace( /\{\{id\}\}/, data[i].id )
+            .replace( /\{\{date\}\}/, data[i].date )
+            .replace( /\{\{numErr\}\}/, data[i].number_errors ) 
+            .replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            //.replace( /\{\{date\}\}/, data[i].date ) 
+        }
+        result.innerHTML = inner;
+
+    }
+}
+var getAllReports = function(){
+    $.ajax ({
+            dataType: "json",
+            type: "POST",
+            url: "get_reports.php",
+            data: {userId: Session.userId},
+            success: function(data) {
+                return data;
+                 
+
+                
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                //uh oh
+
+                
+            }
+        });
+}
