@@ -172,16 +172,19 @@ background-color:#ecf0f1;
   color: #FFC425;
 }
 /* END TABLES   */
-button #start_scan{
+button#start_scan{
   padding: 20px;
   color: #619080;
   margin: 0, auto;
 }
 
-button .menu{
-  border: 1px solid #ddd;
-  background-color: #0cb270;
+button.menu{
+    border: 1px solid #FFC425;
+  background-color:  #619080;
   padding: 8px;
   margin-left: 10px;
   font-size: 20px;
+  color: white;
+  border-radius: 3px;
+}
 }
