@@ -16,20 +16,19 @@ class DS extends Stackable {
 
 class SafeLog extends Stackable {
 	public function run() {}
-	
 	protected function log($message) 
 	{
-//		ECHO_TEXT("$message");
+		ECHO_TEXT("$message");
 	}
 	
 	protected function alert_log($bool, $message)
 	{
-//		ECHO_ALERT($bool, "$message");
+		ECHO_ALERT($bool, "$message");
 	}
 	
 	public function block_log()
 	{
-//		ECHO_BLOCK();
+		ECHO_BLOCK();
 	}
 }
 
