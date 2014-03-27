@@ -57,10 +57,10 @@ class LOOPSCANNER extends Thread {
 		$MAX = "";
 		//$link = '';
 		$temp_table = array();//source, link
-		$DB_TASK = array();//FID, link, source, type ("good_link (unsearched, max, stopped)","bad_link","good_file","bad_file","in_database")
+		$DB_TASK = array();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
 		$FIND_TASK = array();//link, source, mainID-ID
 		$TEST_TASK = array();//link, source, FID
-		array_push($TEST_TASK,array("ID"=>-1,"link" => $link,"source"=>$SOURCE));
+		array_push($TEST_TASK,array("FID"=>-1,"link" => $link,"source"=>$SOURCE));
 		do{
 			$this->logger->block_log();
 			$this->logger->log("Starting Search");
