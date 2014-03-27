@@ -18,17 +18,20 @@ class SafeLog extends Stackable {
 	public function run() {}
 	protected function log($message) 
 	{
-		ECHO_TEXT("$message");
+		//ECHO_TEXT("$message");
+		printf($message);
 	}
 	
 	protected function alert_log($bool, $message)
 	{
-		ECHO_ALERT($bool, "$message");
+		//ECHO_ALERT($bool, "$message");
+		printf($message);
 	}
 	
 	public function block_log()
 	{
-		ECHO_BLOCK();
+		//ECHO_BLOCK();
+		printf($message);
 	}
 }
 
@@ -44,12 +47,12 @@ class LOOPSCANNER extends Thread {
     }
 
     public function run() {
-		$SOURCE = "http://localhost:8080/Forager/";
-		//$SOURCE = "https://banweb.spsu.edu/pls/PROD/";
+		//$SOURCE = "http://localhost:8080/Forager/";
+		$SOURCE = "https://spsu.edu/";
 		$DOMAIN = $SOURCE;
-		$GLOBALS = array('DOMAIN' => $DOMAIN);
-		$link = 'error.html';
-		//$link = "twbkwbis.P_WWWLogin";
+		//$GLOBALS = array('DOMAIN' => $DOMAIN);
+		//$link = 'error.html';
+		$link = '';
 		$id = 0;
 		$MAX = "";
 		//$link = '';
@@ -57,14 +60,13 @@ class LOOPSCANNER extends Thread {
 		$DB_TASK = array();//FID, link, source, type ("good_link (unsearched, max, stopped)","bad_link","good_file","bad_file","in_database")
 		$FIND_TASK = array();//link, source, mainID-ID
 		$TEST_TASK = array();//link, source, FID
-		array_push($FIND_TASK,array("ID"=>-1,"link" => $link,"source"=>$SOURCE));
+		array_push($TEST_TASK,array("ID"=>-1,"link" => $link,"source"=>$SOURCE));
 		do{
 			$this->logger->block_log();
 			$this->logger->log("Starting Search");
 			//=========================================================================================================================================
-			for($i = 0; $i < sizeof($TEST_TASK); $i++)
+			while(sizeof($TEST_TASK) > 0)
 			{
-				//Add a test case to make sure noone puts in this website... That could be bad...
 				$element = array_shift($TEST_TASK);
 				$this->logger->log("Starting test on " . "source = " . $element['source'] . " , link = " . $element['link']);
 				$newLink = Test_Connect($element['source'] . $element['link']);
@@ -84,8 +86,6 @@ class LOOPSCANNER extends Thread {
 					{
 						if(gettype($MAX) != "string" && $MAX <= sizeof($temp_table))
 							$type .= "_max";
-		//				else if($stopped)
-		//					$type .= "_stop"
 						else if($DOMAIN != "" && !EXISTS($element['source'],$DOMAIN))
 							$type .= "_unsearched";
 					}
@@ -97,7 +97,7 @@ class LOOPSCANNER extends Thread {
 			//==========================================================================================================================================
 			//==========================================================================================================================================
 			//This would be a functionality for a single set of threads.
-			for($i = 0; $i < sizeof($FIND_TASK); $i++)
+			while(sizeof($FIND_TASK) > 0)
 			{
 				$element = array_shift($FIND_TASK);
 				$this->logger->log("Starting search on " . "source = " . $element['source'] . " , link = " . $element['link']);
@@ -120,32 +120,51 @@ class LOOPSCANNER extends Thread {
 							$arr_temp = array("link" => $elem,"source"=>$element['source']);
 						}
 						
-						if(EXISTS_IN_ARRAY($temp_table, $arr_temp))
+						if(EXISTS_IN_ARRAY($temp_table, $arr_temp))//check to see if in url table
 						{
-							$this->logger->alert_log(true,"Already in the database.");
-							array_push($DB_TASK, array("FID"=>$element['ID'],"link" => $element['link'],"source"=>$element['source'], "type"=>"in_database"));
+							$this->logger->alert_log(true,$arr_temp['source'] . $arr_temp['link'] . " Already in the database.");
+							//Add another component to here that has an ID.
+							array_push($DB_TASK, array("FID"=>$element['ID'], "type"=>"in_database"));
 						}
 						else
 						{
 							$this->logger->log("Added to be tested.");
-							array_push($temp_table, $arr_temp);
+							array_push($temp_table, $arr_temp);//remove this
 							array_push($TEST_TASK, array("FID"=>$element['ID'],"link" => $arr_temp['link'],"source"=>$arr_temp['source']));
 						}
 					}
 				}
 			}
 			//=========================================================================================================================================
+			//Grab stop here
 			//=========================================================================================================================================
-			for($i = 0; $i < sizeof($DB_TASK); $i++)
+			while(sizeof($DB_TASK) > 0)
 			{
 				$element = array_shift($DB_TASK);
-				$this->logger->log("Moving " . $i['source'] . $i['link'] . " to db.");
-				$ID = 0;//Where was inserted into the database...
-				if($element['type'] == "good_link")
-					array_push($FIND_TASK,array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']));
+				$this->logger->log("Moving " . $element['source'] . $element['link'] . " to db.");
+
+				if($element['type'] == "in_database")
+				{
+					//find ID then input to link_rel
+				}
+				else
+				{
+					$type = "link";
+					$state = true;
+					$ID = 0;//insert into url.
+					//insert into link_rel
+					
+					if($element['type'] == "good_link")
+					{
+						//if stopped change type skip this and add to database...
+						array_push($FIND_TASK,array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']));
+					}
+				}
 			}
 			//=========================================================================================================================================
 		}while(sizeof($TEST_TASK) > 0 || sizeof($FIND_TASK) > 0);
+		$this->logger->block_log();
+		$this->logger->alert_log(true,"done");
 		$this->kill();
     }
 }
