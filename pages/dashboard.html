@@ -47,7 +47,7 @@
   
 <button id="log_session">log session</button>
 <button id="log_cookie">log cookie</button>
-
+<div id="data_echo"></div>
     <table id="goups_background">
       <thead>
         <tr class="tr_non_clickable"id="goups_background">
@@ -125,14 +125,18 @@
     $(this).hide();
     $("#stop_scan").show();
     var timeDiv = document.getElementById('scan_timer');
+    var reportDiv = document.getElementById('data_echo');
     scanTime.timer = setInterval(function () {
       timeDiv.innerHTML = "Seconds since the start: " + (scanTime.getElapsed()/1000);
+      reportDiv.innerhtml = reportViewer.getData();
     }, 1000);
   });
+
   $("#stop_scan").click(function(event){
     //TODO stop scan on server
     clearInterval(scanTime.timer);
   });
+  
 </script>
 <script type="template" id="reports_template">
     <tr class="tr_clickable" id="goups_background">

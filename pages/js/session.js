@@ -217,3 +217,29 @@ var Render = {
 
     }
 }
+
+var reportViewer = {
+    getData: function(){
+        $.ajax ({
+                dataType: "json",
+                type: "POST",
+                url: "URL HERE",
+                data: {userId: Session.userId},
+                success: function(data) {
+                    
+                        console.log("success");
+                        console.log(data);
+                        retrun data;
+                        
+                        //Render.renderExistingReports(data, template,result);
+
+                       
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("fail");
+
+                    
+                }
+            });
+    }
+}
