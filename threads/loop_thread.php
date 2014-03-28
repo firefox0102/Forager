@@ -8,7 +8,7 @@ function EXISTS_IN_ARRAY($ARRAY,$DATA)
 	}
 	return false;
 }
-function Exists_in_array($arr, $search)
+function Contain_in_array($arr, $search)
 {
 	foreach($arr as $i)
 		if(Exists($search, $i))
@@ -26,19 +26,22 @@ class SafeLog extends Stackable {
 	protected function log($message) 
 	{
 		//ECHO_TEXT("$message");
-		printf($message);
+		printf($message . "<br>");
 	}
 	
 	protected function alert_log($bool, $message)
 	{
 		//ECHO_ALERT($bool, "$message");
-		printf($message);
+		if($bool)
+			printf("$--" . $message . "<br>");
+		else
+			printf("!--" . $message . "<br>");
 	}
 	
 	public function block_log()
 	{
 		//ECHO_BLOCK();
-		printf($message);
+		printf("<br>");
 	}
 }
 
@@ -52,6 +55,8 @@ class LOOPSCANNER extends Thread {
     public function __construct($start_elements, $MAX, $USE_DOMAIN) {
 		$this->logger = new SafeLog();
         $this->start_elements = $start_elements;
+		$this->MAX = $MAX;
+		$this->USE_DOMAIN = $MAX;
         $this->start();
     }
 
@@ -61,6 +66,8 @@ class LOOPSCANNER extends Thread {
 		$DB_TASK = new DS();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
 		$FIND_TASK = new DS();//link, source, ID
 		$TEST_TASK = new DS();//link, source, FID
+		
+		$count = 0;
 		foreach($this->start_elements as $elem)
 		{
 			$TEST_TASK[] = array("FID"=>-1,"link" => $elem['link'],"source"=>$elem['source']);
@@ -90,13 +97,14 @@ class LOOPSCANNER extends Thread {
 					$type = 'good' . $type;
 					if($type == "good_link")
 					{
-						if(gettype($this->MAX) != "string" && $this->MAX <= sizeof($temp_table))
+						if(gettype($this->MAX) != "string" && $this->MAX <= $count)
 							$type .= "_max";
-						else if($this->USE_DOMAIN && !Exists_in_array($DOMAIN, $element['source']))
+						else if($this->USE_DOMAIN && !Contain_in_array($DOMAIN, $element['source']))
 							$type .= "_unsearched";
 					}
 					$this->logger->alert_log(true,"GOOD!!");
 				}
+				$this->logger->log("TYPE IS NOW: $type");
 				//Adding to db tasks what just got tested...
 				$DB_TASK[] = array("FID"=>$element['FID'],"link" => $element['link'],"source"=>$element['source'], "type"=>$type);
 			}
@@ -138,6 +146,7 @@ class LOOPSCANNER extends Thread {
 							//insert into database here as well then add attr that has ID.
 							$TEST_TASK[] = array("FID"=>$element['ID'],"link" => $arr_temp['link'],"source"=>$arr_temp['source']);
 						}
+						$count++;
 					}
 				}
 			}
