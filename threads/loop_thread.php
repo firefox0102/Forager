@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con = mysqli_connect("localhost","root","forageme","forager");
+$con = mysqli_connect("localhost","root","forageme","db_forager");
 if (mysqli_connect_errno()){
   echo "Failed to connect to server.....can you be cool just once! Just once be cool!: " . mysqli_connect_error();
   exit;
@@ -87,6 +87,17 @@ function Exists($str)
 	}
 }
 //=============================================================================================================================================
+function Extract_Specified_Attributes_Into_Array_Special($str, $attributes)
+{
+	$storage = array();
+	foreach($attributes as $a)
+	{
+		$arr_temp = Extract_From_Quotes_Array(Extract_Specified_Attributes_Into_Array($str,$a['search'],$a['token']),$a['token']);
+		foreach($arr_temp as $e)
+			array_push($storage,$e);
+	}
+	return $storage;
+}
 //=============================================================================================================================================
 //Reads through a html text string and finds all 
 function Extract_Specified_Attributes_Into_Array($str,$search,$token)//Make one that also finds any include statements.
@@ -219,12 +230,14 @@ class LOOPSCANNER extends Thread {
 	protected $start_elements;
 	protected $MAX;
 	protected $USE_DOMAIN;
+	protected $attributes;
 	
-    public function __construct($start_elements, $MAX, $USE_DOMAIN) {
+    public function __construct($start_elements, $MAX, $USE_DOMAIN, $attributes) {
 		$this->logger = new SafeLog();
         $this->start_elements = $start_elements;
 		$this->MAX = $MAX;
 		$this->USE_DOMAIN = $MAX;
+		$this->attributes = $attributes;
         $this->start();
     }
 
@@ -286,7 +299,7 @@ class LOOPSCANNER extends Thread {
 				$element = $FIND_TASK->POP();
 				$this->logger->log("Starting search on " . "source = " . $element['source'] . " , link = " . $element['link']);
 				//need to make where can grab all types... an array with the types might work...
-				$arr = Extract_From_Quotes_Array(Extract_Specified_Attributes_Into_Array(Can_Connect($element['source'] . $element['link']),"href","="),"=");
+				$arr = Extract_Specified_Attributes_Into_Array_Special(Can_Connect($element['source'] . $element['link']), $this->attributes)
 				foreach($arr as $elem)
 				{
 					//make sure not some weird reference to a spot on the page...
@@ -361,6 +374,9 @@ class LOOPSCANNER extends Thread {
 //Run the thread!!!
 $ds = new DS();
 $ds[] = array('source'=>"http://spsu.edu/", 'link'=>"");
-$t = new LOOPSCANNER($ds, 1, true);
+$attributes = new DS();
+$attributes[] = array('search'=>"href",'token'=>"=");
+$attributes[] = array('search'=>"src",'token'=>"=");
+$t = new LOOPSCANNER($ds, 1, true, $attributes);
 //===================================================================================================================================================
 ?>
