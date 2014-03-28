@@ -61,6 +61,8 @@ class LOOPSCANNER extends Thread {
     }
 
     public function run() {
+		ini_set("max_execution_time", 2);
+	
 		$DOMAIN = new DS();//source
 		
 		$DB_TASK = new DS();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
