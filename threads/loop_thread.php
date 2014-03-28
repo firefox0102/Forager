@@ -299,7 +299,7 @@ class LOOPSCANNER extends Thread {
 				$element = $FIND_TASK->POP();
 				$this->logger->log("Starting search on " . "source = " . $element['source'] . " , link = " . $element['link']);
 				//need to make where can grab all types... an array with the types might work...
-				$arr = Extract_Specified_Attributes_Into_Array_Special(Can_Connect($element['source'] . $element['link']), $this->attributes)
+				$arr = Extract_Specified_Attributes_Into_Array_Special(Can_Connect($element['source'] . $element['link']), $this->attributes);
 				foreach($arr as $elem)
 				{
 					//make sure not some weird reference to a spot on the page...
