@@ -377,6 +377,6 @@ $ds[] = array('source'=>"http://spsu.edu/", 'link'=>"");
 $attributes = new DS();
 $attributes[] = array('search'=>"href",'token'=>"=");
 $attributes[] = array('search'=>"src",'token'=>"=");
-$t = new LOOPSCANNER($ds, 1, true);
+$t = new LOOPSCANNER($ds, 1, true, $attributes);
 //===================================================================================================================================================
 ?>
