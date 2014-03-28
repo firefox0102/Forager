@@ -1,6 +1,6 @@
 <?php
 session_start();
-$con = mysqli_connect("localhost","root","forageme","forager");
+$con = mysqli_connect("localhost","root","forageme","db_forager");
 if (mysqli_connect_errno()){
   echo "Failed to connect to server.....can you be cool just once! Just once be cool!: " . mysqli_connect_error();
   exit;
