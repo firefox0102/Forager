@@ -119,32 +119,36 @@ class LOOPSCANNER extends Thread {
 				$arr = Extract_From_Quotes_Array(Extract_Specified_Attributes_Into_Array(Can_Connect($element['source'] . $element['link']),"href","="),"=");
 				foreach($arr as $elem)
 				{
+					//make sure not some weird reference to a spot on the page...
 					if(!Exists($elem, '#'))
 					{
 						$this->logger->log($elem);
 						
+						//Configure target...
 						if(Exists($elem,"http"))
 						{
 							$SourceLen = Find_Source_Length($elem);
 							$a = strlen($elem) - $SourceLen;
-							$arr_temp = array("link" => substr($elem,$SourceLen,$a),"source"=>substr($elem,0,$SourceLen));
+							$target = array("link" => substr($elem,$SourceLen,$a),"source"=>substr($elem,0,$SourceLen));
 						}
 						else
 						{
-							$arr_temp = array("link" => $elem,"source"=>$element['source']);
+							$target = array("link" => $elem,"source"=>$element['source']);
 						}
-						//Needs to be completely changed
-						if(EXISTS_IN_ARRAY($temp_table, $arr_temp))//check to see if in url table
+						
+						//Checks to see if already been tested
+						$IN = do_check_url($target['source'],$target['link']);
+						if($IN == NULL)//check to see if in url table
 						{
-							$this->logger->alert_log(true,$arr_temp['source'] . $arr_temp['link'] . " Already in the database.");
-							//Add another component to here that has an ID.
-							$DB_TASK[] = array("FID"=>$element['ID'], "type"=>"in_database");
-						}
-						else
-						{
-							$this->logger->log("Added to be tested.");
 							//insert into database here as well then add attr that has ID.
-							$TEST_TASK[] = array("FID"=>$element['ID'],"link" => $arr_temp['link'],"source"=>$arr_temp['source']);
+							$this->logger->log("Added to be tested.");
+							$TEST_TASK[] = array("FID"=>$element['ID'],"link" => $target['link'],"source"=>$target['source']);
+						}
+						else
+						{
+							//if already in the url table update the link_rel table
+							$this->logger->alert_log(true,$target['source'] . $target['link'] . " Already in the database.");
+							do_insert_link_url($IN, $element['ID']);
 						}
 						$count++;
 					}
@@ -152,29 +156,30 @@ class LOOPSCANNER extends Thread {
 			}
 			//=========================================================================================================================================
 			//Grab stop here
+			$running = do_check_running();
 			//=========================================================================================================================================
 			while(sizeof($DB_TASK) > 0)
 			{
 				$element = $DB_TASK->POP();
 				$this->logger->log("Moving " . $element['source'] . $element['link'] . " to db.");
-
-				if($element['type'] == "in_database")
-				{
-					//find ID then input to link_rel
-				}
-				else
-				{
-					$type = "link";
-					$state = true;
-					$ID = 0;//insert into url.
-					//insert into link_rel
-					//update table using ID passed in...
-					if($element['type'] == "good_link")
-					{
-						//if stopped change type skip this and add to database...
-						$FIND_TASK[] = array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']);
-					}
-				}
+				
+				//can condense to less lines of code to make faster...
+				//=======================================
+				//Place into url table
+				$state = Exists($element['type'],'good');
+				
+				//check to see if running
+				if(!$running && $element['type'] == "good_link")
+					$element['type'] .= "_stop";
+					
+				$ID = do_insert_url($element['source'], $element['link'], substr($element['type'], 3 + (int)$state, strlen($element['type']) - (4 + (int)$state)), $state);
+				//=======================================
+				//Place into link_rel
+				do_insert_link_rel($ID, $element['FID']);
+				
+				//if running and a good link, place into the FIND_TASK...
+				if($running && $element['type'] == "good_link")
+					$FIND_TASK[] = array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']);
 			}
 			//=========================================================================================================================================
 		}while(sizeof($TEST_TASK) > 0 || sizeof($FIND_TASK) > 0);
