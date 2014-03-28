@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `scan` (
 
 CREATE TABLE IF NOT EXISTS `url` (
   `url_id` int(11) NOT NULL AUTO_INCREMENT,
-  `link` varchar(1000) NOT NULL UNIQUE,
-  `source` varchar(1000) NOT NULL UNIQUE,
+  `link` varchar(1000) NOT NULL,
+  `source` varchar(1000) NOT NULL,
   `type` varchar(1000) NOT NULL,
   `state` tinyint(1) NOT NULL,
   PRIMARY KEY (`url_id`)
@@ -43,5 +43,5 @@ CREATE TABLE IF NOT EXISTS `url` (
 
 CREATE TABLE IF NOT EXISTS `link_rel` (
   `url_id` int(11) NOT NULL,
-  `dest_id` int(11) NOT NULL,
+  `dest_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
