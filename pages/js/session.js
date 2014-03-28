@@ -88,6 +88,7 @@ var scanTime = {
     start: function(){
             scanTime.startTime = new Date();
             dataStore.set("scanTimer", scanTime);
+            
         
         //else already started so do nothing.
     },
@@ -219,18 +220,19 @@ var Render = {
 }
 
 var reportViewer = {
-    getData: function(){
+    getData: function(id){
         $.ajax ({
                 dataType: "json",
                 type: "POST",
-                url: "URL HERE",
-                data: {userId: Session.userId},
+                url: "scan_data.php",
+                data: {scanId: id},
                 success: function(data) {
                     
                         console.log("success");
                         console.log(data);
-                        retrun data;
+                        return data;
                         
+
                         //Render.renderExistingReports(data, template,result);
 
                        
@@ -243,3 +245,60 @@ var reportViewer = {
             });
     }
 }
+var report = {
+    start: function(){
+        $.ajax ({
+                dataType: "json",
+                type: "POST",
+                url: "scan_start.php",
+                data: {userId: Session.userId},
+                success: function(data) {
+                    
+                        console.log("success");
+                        console.log(data);
+                        return true;
+                        
+
+                        //Render.renderExistingReports(data, template,result);
+
+                       
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("fail");
+                    return false;
+
+                    
+                }
+            });
+    },
+
+    stop: function(){
+        $.ajax ({
+                dataType: "json",
+                type: "POST",
+                url: "scan_stop.php",
+                data: {userId: Session.userId},
+                success: function(data) {
+                    
+                        console.log("success");
+                        console.log(data);
+                        return data;
+                        
+
+                        //Render.renderExistingReports(data, template,result);
+
+                       
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("fail");
+
+                    
+                }
+            });
+    }
+}
+
+    
+
+
+    

@@ -28,7 +28,7 @@
         $( "#login_form" ).on( "submit", function( event ) 
         {
           event.preventDefault();
-          console.log( $( this ).serializeArray() );
+          
           Session.login($("#un").val(), $("#pass").val());
         });
   </script>

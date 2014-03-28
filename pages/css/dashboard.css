@@ -177,7 +177,12 @@ button#start_scan{
   color: #619080;
   margin: 0, auto;
 }
+button#stop_scan{
+  padding: 20px;
+  color: #619080;
 
+  margin: 0, auto;
+}
 button.menu{
     border: 1px solid #FFC425;
   background-color:  #619080;
@@ -187,4 +192,13 @@ button.menu{
   color: white;
   border-radius: 3px;
 }
+button.menu:hover{
+    border: 1px solid #FFC425;
+  background-color:  #FFC425;
+  padding: 8px;
+  margin-left: 10px;
+  font-size: 20px;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer; cursor: hand;
 }
