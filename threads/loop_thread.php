@@ -1,4 +1,172 @@
 <?php
+start_session();
+$con = mysqli_connect("localhost","root","forageme","forager");
+if (mysqli_connect_errno()){
+  echo "Failed to connect to server.....can you be cool just once! Just once be cool!: " . mysqli_connect_error();
+  exit;
+}
+
+// return url_id from url_ table
+function do_check_url($source, $link){
+	$url_table = "url_".$_SESSION["current_id"];
+	$sql ="
+		SELECT url_id
+		FROM `'$url_table'`
+		WHERE source = '$source' AND
+			  link = '$link'
+	";
+	$result = mysqli_query($con,$sql);
+	$row = mysqli_fetch_row($result);
+	if( !is_null($row) ){
+		return $row[0];
+	}
+	else{
+		return NULL;
+	}
+}
+
+// insert into url_ table AND link_rel table
+function do_insert_url($source, $link, $type, $state){
+	$url_table = "url_".$_SESSION["current_id"]; 
+	$sql ="
+		INSERT INTO `'$url_table'`(`link`,`source`,`type`,`state`)
+		VALUES('$link','$source','$type','$state')
+	";
+	$result = mysqli_query($con,$sql);
+	$last_insert = mysqli_insert_id($con);
+	return $last_insert;
+}
+
+
+// insert into link_rel table only
+function do_insert_link_rel($url_id, $dest_id){
+	$link_rel_table = "link_rel_".$_SESSION["current_id"]; 
+	$sql ="
+		INSERT INTO `'$link_rel_table'`(`url_id`,`dest_id`)
+		VALUES('$url_id','$dest_id')
+	";
+	$result = mysqli_query($con,$sql);
+}
+
+
+// checks scan table to see if any scan is running
+function do_check_running(){
+	$sql ="
+		SELECT *
+		FROM `scan`
+		WHERE is_running = 1
+	";
+	$result = mysqli_query($con,$sql);
+	$row = mysqli_fetch_row($result);
+	if( is_null($row) ){
+		return 0;
+	}
+	else{
+		return 1;
+	}
+}	
+//===================================================================================================================================================
+//included functions
+//=============================================================================================================================================
+//Tests to see if any of the params following str are in str.
+function Exists($str)
+{
+	if(sizeof(func_get_args(0)) > 1)
+	{
+		for ($i = 1; $i < sizeof(func_get_args(0)); $i++) 
+		{
+			$pos = strripos($str,func_get_args(0)[$i]);
+			if(gettype($pos) != "boolean")
+				return true;
+		}
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Reads through a html text string and finds all 
+function Extract_Specified_Attributes_Into_Array($str,$search,$token)//Make one that also finds any include statements.
+{
+$array = array();
+//Creates a template of what you are looking for.
+//\s* :means a possible space.
+//= :the equals that follows the href and etc.
+//(\"??)([^\"]*?)\\1 :The information we want.
+//(\"??) :Double or Single quotes.
+//([^\"]*?) : The ending of the quotes (double or single).
+//\\1 : Make sure stops grabbing at the end.
+$search .= "\s*$token\s*(\"??)([^\" >]*?)\\1";
+preg_match_all("/\s$search/siU", $str, $array);
+//Grab the important information generated.
+$array = $array[0];
+return $array;
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Extracts information from a string (only works on cases such as Extract_From_Quotes(href="something_you_want")
+function Extract_From_Quotes($str,$token)
+{
+	//Find the first occurrence of = and then we know where the " or ' first appears.
+	$pos = stripos($str,$token);
+	//Grab the substring starting from pos ignoring the = then the following ". So we add two
+	//Also the length of the information between the quotes is strlen($str) - ($pos + 3)
+	//substr(string, starting position, length)
+	return substr($str,$pos + 2,strlen($str) - ($pos + 3));
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Works like Extract_From_Quotes except will do it to an entire array.
+function Extract_From_Quotes_Array($array,$token)
+{
+	for($i = 0; $i < sizeof($array); ++$i)
+	{
+		$array[$i] = Extract_From_Quotes($array[$i],$token);
+	}
+	return $array;
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Extracts information from a string (only works on cases such as Extract_From_Quotes(href="something_you_want")
+function Find_Source_Length($str)
+{
+	//Find the first occurrence of = and then we know where the " or ' first appears.
+	if(strripos($str,"/") == strlen($str)-1)
+		$pos = strripos($str,"/",strripos($str,"/") - 1);
+	else
+		$pos = strripos($str,"/");
+	//Grab the substring starting from pos ignoring the = then the following ". So we add two
+	//Also the length of the information between the quotes is strlen($str) - ($pos + 3)
+	//substr(string, starting position, length)
+	return strlen(substr($str,0,$pos + 1));
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Tests to see if can connect to a link.
+//If can returns the contents of the link.
+//If cannot then returns false.
+function Can_Connect($link)
+{
+	$html = @file_get_contents($link);
+	if(!$html)
+		return false;
+	return $html;
+}
+//=============================================================================================================================================
+//=============================================================================================================================================
+//Tests to see if can connect to a link.
+function Test_Connect($link)
+{
+	$html = @file_get_contents($link);
+	if(!$html)
+		return false;
+	return $html;
+}
+//=============================================================================================================================================
+//===================================================================================================================================================
 function EXISTS_IN_ARRAY($ARRAY,$DATA)
 {
 	for($i = 0; $i < sizeof($ARRAY); $i++)
@@ -191,4 +359,10 @@ class LOOPSCANNER extends Thread {
 		$this->kill();
     }
 }
+//===================================================================================================================================================
+//Run the thread!!!
+$ds = new DS();
+$ds[] = array('source'=>"http://spsu.edu/", 'link'=>"");
+$t = new LOOPSCANNER($ds, 1, true);
+//===================================================================================================================================================
 ?>
