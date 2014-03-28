@@ -302,9 +302,7 @@ class LOOPSCANNER extends Thread {
 							$target = array("link" => substr($elem,$SourceLen,$a),"source"=>substr($elem,0,$SourceLen));
 						}
 						else
-						{
 							$target = array("link" => $elem,"source"=>$element['source']);
-						}
 						
 						//Checks to see if already been tested
 						$IN = do_check_url($target['source'],$target['link']);
