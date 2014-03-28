@@ -210,8 +210,8 @@ var Render = {
             .replace( /\{\{name\}\}/, data[i].report_name )
             .replace( /\{\{id\}\}/, data[i].report_id )
             .replace( /\{\{date\}\}/, data[i].date )
-            .replace( /\{\{numErr\}\}/, data[i].number_errors ) 
-            .replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            .replace( /\{\{numErr\}\}/, data[i].number_errors ) ;
+            //.replace( /\{\{numPages\}\}/, data[i].pages_scanned );
             //.replace( /\{\{date\}\}/, data[i].date ) 
         }
         result.innerHTML = inner;
