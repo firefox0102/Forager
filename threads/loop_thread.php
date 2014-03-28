@@ -8,6 +8,13 @@ function EXISTS_IN_ARRAY($ARRAY,$DATA)
 	}
 	return false;
 }
+function Exists_in_array($arr, $search)
+{
+	foreach($arr as $i)
+		if(Exists($search, $i))
+			return true;
+	return false;
+}
 
 class DS extends Stackable {
     public function run() {
@@ -39,35 +46,34 @@ class LOOPSCANNER extends Thread {
 
 	protected $logger;
 	protected $start_elements;
+	protected $MAX;
+	protected $USE_DOMAIN;
 	
-    public function __construct($start_elements) {
+    public function __construct($start_elements, $MAX, $USE_DOMAIN) {
 		$this->logger = new SafeLog();
         $this->start_elements = $start_elements;
         $this->start();
     }
 
     public function run() {
-		//$SOURCE = "http://localhost:8080/Forager/";
-		$SOURCE = "https://spsu.edu/";
-		$DOMAIN = $SOURCE;
-		//$GLOBALS = array('DOMAIN' => $DOMAIN);
-		//$link = 'error.html';
-		$link = '';
-		$id = 0;
-		$MAX = "";
-		//$link = '';
-		$temp_table = array();//source, link
-		$DB_TASK = array();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
-		$FIND_TASK = array();//link, source, mainID-ID
-		$TEST_TASK = array();//link, source, FID
-		array_push($TEST_TASK,array("FID"=>-1,"link" => $link,"source"=>$SOURCE));
+		$DOMAIN = new DS();//source
+		
+		$DB_TASK = new DS();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
+		$FIND_TASK = new DS();//link, source, ID
+		$TEST_TASK = new DS();//link, source, FID
+		foreach($this->start_elements as $elem)
+		{
+			$TEST_TASK[] = array("FID"=>-1,"link" => $elem['link'],"source"=>$elem['source']);
+			if($this->USE_DOMAIN)
+				$DOMAIN[] = $elem['source'];
+		}
 		do{
 			$this->logger->block_log();
 			$this->logger->log("Starting Search");
 			//=========================================================================================================================================
 			while(sizeof($TEST_TASK) > 0)
 			{
-				$element = array_shift($TEST_TASK);
+				$element = $TEST_TASK->POP();
 				$this->logger->log("Starting test on " . "source = " . $element['source'] . " , link = " . $element['link']);
 				$newLink = Test_Connect($element['source'] . $element['link']);
 				if(Exists($element['link'],'.css','.png','.jpg','.doc','.ppt','.pdf','.pcf'))
@@ -84,22 +90,22 @@ class LOOPSCANNER extends Thread {
 					$type = 'good' . $type;
 					if($type == "good_link")
 					{
-						if(gettype($MAX) != "string" && $MAX <= sizeof($temp_table))
+						if(gettype($this->MAX) != "string" && $this->MAX <= sizeof($temp_table))
 							$type .= "_max";
-						else if($DOMAIN != "" && !EXISTS($element['source'],$DOMAIN))
+						else if($this->USE_DOMAIN && !Exists_in_array($DOMAIN, $element['source']))
 							$type .= "_unsearched";
 					}
 					$this->logger->alert_log(true,"GOOD!!");
 				}
 				//Adding to db tasks what just got tested...
-				array_push($DB_TASK, array("FID"=>$element['FID'],"link" => $element['link'],"source"=>$element['source'], "type"=>$type));
+				$DB_TASK[] = array("FID"=>$element['FID'],"link" => $element['link'],"source"=>$element['source'], "type"=>$type);
 			}
 			//==========================================================================================================================================
 			//==========================================================================================================================================
 			//This would be a functionality for a single set of threads.
 			while(sizeof($FIND_TASK) > 0)
 			{
-				$element = array_shift($FIND_TASK);
+				$element = $FIND_TASK->POP();
 				$this->logger->log("Starting search on " . "source = " . $element['source'] . " , link = " . $element['link']);
 				//need to make where can grab all types... an array with the types might work...
 				$arr = Extract_From_Quotes_Array(Extract_Specified_Attributes_Into_Array(Can_Connect($element['source'] . $element['link']),"href","="),"=");
@@ -119,18 +125,18 @@ class LOOPSCANNER extends Thread {
 						{
 							$arr_temp = array("link" => $elem,"source"=>$element['source']);
 						}
-						
+						//Needs to be completely changed
 						if(EXISTS_IN_ARRAY($temp_table, $arr_temp))//check to see if in url table
 						{
 							$this->logger->alert_log(true,$arr_temp['source'] . $arr_temp['link'] . " Already in the database.");
 							//Add another component to here that has an ID.
-							array_push($DB_TASK, array("FID"=>$element['ID'], "type"=>"in_database"));
+							$DB_TASK[] = array("FID"=>$element['ID'], "type"=>"in_database");
 						}
 						else
 						{
 							$this->logger->log("Added to be tested.");
-							array_push($temp_table, $arr_temp);//remove this
-							array_push($TEST_TASK, array("FID"=>$element['ID'],"link" => $arr_temp['link'],"source"=>$arr_temp['source']));
+							//insert into database here as well then add attr that has ID.
+							$TEST_TASK[] = array("FID"=>$element['ID'],"link" => $arr_temp['link'],"source"=>$arr_temp['source']);
 						}
 					}
 				}
@@ -140,7 +146,7 @@ class LOOPSCANNER extends Thread {
 			//=========================================================================================================================================
 			while(sizeof($DB_TASK) > 0)
 			{
-				$element = array_shift($DB_TASK);
+				$element = $DB_TASK->POP();
 				$this->logger->log("Moving " . $element['source'] . $element['link'] . " to db.");
 
 				if($element['type'] == "in_database")
@@ -153,11 +159,11 @@ class LOOPSCANNER extends Thread {
 					$state = true;
 					$ID = 0;//insert into url.
 					//insert into link_rel
-					
+					//update table using ID passed in...
 					if($element['type'] == "good_link")
 					{
 						//if stopped change type skip this and add to database...
-						array_push($FIND_TASK,array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']));
+						$FIND_TASK[] = array("ID"=>$ID,"link" => $element['link'],"source"=>$element['source']);
 					}
 				}
 			}
