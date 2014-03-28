@@ -61,8 +61,6 @@ class LOOPSCANNER extends Thread {
     }
 
     public function run() {
-		ini_set("max_execution_time", 2);
-	
 		$DOMAIN = new DS();//source
 		
 		$DB_TASK = new DS();//FID, link, source, type ("good_link (unsearched, max, stop)","bad_link","good_file","bad_file","in_database")
@@ -80,6 +78,7 @@ class LOOPSCANNER extends Thread {
 			$this->logger->block_log();
 			$this->logger->log("Starting Search");
 			//=========================================================================================================================================
+			ini_set("max_execution_time", 2);
 			while(sizeof($TEST_TASK) > 0)
 			{
 				$element = $TEST_TASK->POP();
@@ -112,6 +111,7 @@ class LOOPSCANNER extends Thread {
 			}
 			//==========================================================================================================================================
 			//==========================================================================================================================================
+			ini_set("max_execution_time", 2);
 			//This would be a functionality for a single set of threads.
 			while(sizeof($FIND_TASK) > 0)
 			{
@@ -160,6 +160,7 @@ class LOOPSCANNER extends Thread {
 			//Grab stop here
 			$running = do_check_running();
 			//=========================================================================================================================================
+			ini_set("max_execution_time", 2);
 			while(sizeof($DB_TASK) > 0)
 			{
 				$element = $DB_TASK->POP();
