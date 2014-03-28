@@ -10,7 +10,7 @@
 
 
 <nav class="navbar navbar-default" role="navigation">
-<img src="img/SPSU_WORD_RGB.png" width="200"/>
+<a href="dashboard.html"><img src="img/logo.png" width="400" style="margin-top:8px; margin-bottom:8px;"/></a>
   <div style="color:white; float:right;">
   
       <button id="log_out" class="menu">logout</button><br>
@@ -33,10 +33,12 @@
   <div class="panel_body">
   <br>
   <br>
+  <center>
     <button id="start_scan">Start Scan</button>
     <button id="stop_scan">Stop Scan</button>
     <!--<button id="compare_scans"> compare </button>-->
     <div id="scan_timer"></div>
+    <div id="data_echo"></div></center>
     <br>
     <br>
   </div>
@@ -45,9 +47,9 @@
   </div>
   <div class="panel_body">
   
-<button id="log_session">log session</button>
-<button id="log_cookie">log cookie</button>
-<div id="data_echo"></div>
+<!--<button id="log_session">log session</button>
+<button id="log_cookie">log cookie</button>-->
+
     <table id="goups_background">
       <thead>
         <tr class="tr_non_clickable"id="goups_background">
@@ -116,25 +118,32 @@
   });
   $("#start_scan").click(function(event){
     //TODO: start a scan on server
-    
+    var tryer =report.start();
+    var timeDiv = document.getElementById('scan_timer');
+    if(tryer === true){
         scanTime.start();
     
-    console.log(Session);
-    
-    //$(this).prop('disabled', true);
-    $(this).hide();
-    $("#stop_scan").show();
-    var timeDiv = document.getElementById('scan_timer');
-    var reportDiv = document.getElementById('data_echo');
-    scanTime.timer = setInterval(function () {
-      timeDiv.innerHTML = "Seconds since the start: " + (scanTime.getElapsed()/1000);
-      reportDiv.innerhtml = reportViewer.getData();
-    }, 1000);
+        console.log(Session);
+        
+        //$(this).prop('disabled', true);
+        $(this).hide();
+        $("#stop_scan").show();
+        
+        var reportDiv = document.getElementById('data_echo');
+        scanTime.timer = setInterval(function () {
+          timeDiv.innerHTML = "Seconds since the start: " + (scanTime.getElapsed()/1000);
+          //reportDiv.innerhtml = reportViewer.getData();
+        }, 1000);
+     
+    }else{
+      timeDiv.innerHTML = "Scan Not Started, Try turing it off and on again. And please ensure your computer is plugged in.";
+    }
   });
 
   $("#stop_scan").click(function(event){
     //TODO stop scan on server
     clearInterval(scanTime.timer);
+    report.stop();
   });
   
 </script>

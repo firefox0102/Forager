@@ -216,6 +216,36 @@ var Render = {
         }
         result.innerHTML = inner;
 
+    },
+    renderReportDetails: function(data, template, result){
+        var inner = "";
+        var i = 0;
+        for ( ; i < data.length; i++ ) {
+            inner += template
+            .replace( /\{\{date\}\}/, data[i].report_name )
+            .replace( /\{\{time\}\}/, data[i].report_id )
+            .replace( /\{\{pages\}\}/, data[i].date )
+            .replace( /\{\{errors\}\}/, data[i].number_errors );
+            //.replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            //.replace( /\{\{date\}\}/, data[i].date ) 
+        }
+        result.innerHTML = inner;
+
+    },
+    renderReportErrors: function(data, template, result){
+        var inner = "";
+        var i = 0;
+        for ( ; i < data.length; i++ ) {
+            inner += template
+            .replace( /\{\{url\}\}/, data[i].source + data[i].link )
+            .replace( /\{\{type\}\}/, data[i].type)
+            //.replace( /\{\{date\}\}/, data[i].date )
+            //.replace( /\{\{numErr\}\}/, data[i].number_errors ) 
+            //.replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            //.replace( /\{\{date\}\}/, data[i].date ) 
+        }
+        result.innerHTML = inner;
+
     }
 }
 
