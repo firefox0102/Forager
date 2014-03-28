@@ -51,5 +51,6 @@ $new_url_table_sql ="
 ";
 $result = mysqli_query($con,$new_url_table_sql);
 // Then begin the threading adventure...
+exec("php execute_test.php");
 
 ?>
