@@ -6,11 +6,9 @@ if (mysqli_connect_errno()){
   exit;
 }
 
-$scan_name = $_POST["scan_name"];
-$started_by  = $_POST["started_by"];
+$user_id  = $_POST["userId"];
 $start_time  = date('H:i:s');
-//DON'T NEED MAX FOR PHASE 3
-//$max		 = $_POST["max"];
+$scan_name = "report_".$user_id."_".$start_time;
 
 $scan_running_sql ="
  		SELECT *
@@ -19,15 +17,14 @@ $scan_running_sql ="
 ";
 $result = mysqli_store_result($con);
 $row = mysqli_fetch_row($result);
-if(is_null($row) ){ 
-    echo "Scan already in progress!";
+if( !is_null($row) ){ 
     exit;
 }
 
 //IF max is not set then insert null...
 $new_report_sql ="
-		INSERT INTO `scan`(`report_name`,`started_by`,`start_time`,`is_running`)
-		VALUES('$report_name','$started_by','$start_time','1')
+		INSERT INTO `scan`(`scan_name`,`started_by`,`start_time`,`is_running`)
+		VALUES('$scan_name','$user_id','$start_time','1')
 "; 
 $result = mysqli_query($con,$new_report_sql);
 $last_report_id = mysqli_insert_id($con);
