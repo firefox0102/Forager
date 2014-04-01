@@ -20,7 +20,7 @@ $link = '';
 //$link = 'Arts%20Assignments.htm';
 $hLink = array();
 $id = 0;
-$MAX = 2;
+$MAX = 25;
 //$link = '';
 
 $DATABASE_MAIN = array();//ID, link, source, array hlink, type ("good_link","bad_link","good_file","bad_file","undefined")
