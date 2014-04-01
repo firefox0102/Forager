@@ -207,11 +207,11 @@ var Render = {
         var i = 0;
         for ( ; i < data.length; i++ ) {
             inner += template
-            .replace( /\{\{name\}\}/, data[i].report_name )
-            .replace( /\{\{id\}\}/, data[i].report_id )
+            .replace( /\{\{name\}\}/, data[i].scan_name )
+            .replace( /\{\{id\}\}/, data[i].scan_id )
             .replace( /\{\{date\}\}/, data[i].date )
-            .replace( /\{\{numErr\}\}/, data[i].number_errors ) ;
-            //.replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            .replace( /\{\{numErr\}\}/, data[i].number_errors )
+            .replace( /\{\{numPages\}\}/, data[i].pages_scanned );
             //.replace( /\{\{date\}\}/, data[i].date ) 
         }
         result.innerHTML = inner;
@@ -222,11 +222,11 @@ var Render = {
         var i = 0;
         for ( ; i < data.length; i++ ) {
             inner += template
-            .replace( /\{\{date\}\}/, data[i].report_name )
-            .replace( /\{\{time\}\}/, data[i].report_id )
-            .replace( /\{\{pages\}\}/, data[i].date )
-            .replace( /\{\{errors\}\}/, data[i].number_errors );
-            //.replace( /\{\{numPages\}\}/, data[i].pages_scanned );
+            .replace( /\{\{name\}\}/, data[i].scan_name )
+            .replace( /\{\{id\}\}/, data[i].scan_id )
+            .replace( /\{\{date\}\}/, data[i].date )
+            .replace( /\{\{errors\}\}/, data[i].number_errors )
+            .replace( /\{\{numPages\}\}/, data[i].pages_scanned );
             //.replace( /\{\{date\}\}/, data[i].date ) 
         }
         result.innerHTML = inner;
@@ -328,7 +328,16 @@ var report = {
     }
 }
 
-    
+   function getFromUrl(VarSearch){
+    var SearchString = window.location.search.substring(1);
+    var VarArray = SearchString.split('&');
+    for(var i = 0; i < VarArray.length; i++){
+        var KeyValPair = VarArray[i].split('=');
+        if(KeyValPair[0] == VarSearch){
+            return KeyValPair[1];
+        }
+    }
+} 
 
 
     
